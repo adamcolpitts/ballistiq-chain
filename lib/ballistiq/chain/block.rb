@@ -3,11 +3,11 @@ require 'digest/sha2'
 module Ballistiq
   module Chain
     class Block
-      attr_accessor :timestamp, :lastHash, :hash, :payload
+      attr_accessor :timestamp, :last_hash, :hash, :payload
 
-      def initialize(timestamp, lastHash, hash, payload)
+      def initialize(timestamp, last_hash, hash, payload)
         @timestamp = timestamp
-        @lastHash = lastHash
+        @last_hash = last_hash
         @hash = hash
         @payload = payload
       end
@@ -15,7 +15,7 @@ module Ballistiq
       def to_s
         "Block -\n"\
         "\tTimestamp: #{@timestamp}\n"\
-        "\tLast Hash: #{@lastHash}\n"\
+        "\tLast Hash: #{@last_hash}\n"\
         "\tHash:      #{@hash}\n"\
         "\tPayload:   #{@payload}"
       end
@@ -28,16 +28,20 @@ module Ballistiq
           [])
       end
 
-      def self.mine_block(lastBlock, payload)
+      def self.mine_block(last_block, payload)
         timestamp = Time.now
-        lastHash = lastBlock.hash
-        hash = self.hash(timestamp, lastHash, payload)
+        last_hash = last_block.hash
+        hash = self.hash(timestamp, last_hash, payload)
         # Return a new block
-        self.new(timestamp, lastHash, hash, payload)
+        self.new(timestamp, last_hash, hash, payload)
       end
 
-      def self.hash(timestamp, lastHash, payload)
-        Digest::SHA512.new.hexdigest("#{timestamp}#{lastHash}#{payload}")
+      def self.hash(timestamp, last_hash, payload)
+        Digest::SHA512.new.hexdigest("#{timestamp}#{last_hash}#{payload}").to_s
+      end
+
+      def self.block_hash(block)
+        self.hash(block.timestamp, block.last_hash, block.payload)
       end
 
     end

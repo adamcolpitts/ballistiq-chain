@@ -9,8 +9,8 @@ RSpec.describe Block do
     expect(@block.payload).to eq(@data)
   end
 
-  it "should set the `lastHash` to match the hash of the last block" do
-    expect(@block.lastHash).to eq(@lastBlock.hash)
+  it "should set the `last_hash` to match the hash of the last block" do
+    expect(@block.last_hash).to eq(@lastBlock.hash)
   end
 
 end
