@@ -36,6 +36,18 @@ module Ballistiq
 
         true
       end
+
+      def replace_chain(new_chain)
+          if new_chain.length <= @chain.length
+            # Received chain is not longer than the current chain
+            return
+          elsif !is_valid_chain(new_chain)
+            # The received chain is not valid
+            return
+          end
+          # Replace blockchain with the new chain
+          @chain = new_chain
+      end
     end
   end
 end

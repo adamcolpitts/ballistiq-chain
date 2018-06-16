@@ -30,5 +30,16 @@ RSpec.describe Blockchain do
     expect(@bc.is_valid_chain(@bc2.chain)).to be_falsey
   end
 
+  it "should replace the chain with a valid chain" do
+    @bc2.add_block('goo')
+    @bc.replace_chain(@bc2.chain)
+    expect(@bc.chain).to eq(@bc2.chain)
+  end
+
+  it "should not replace the chain with one of less than or equal length" do
+    @bc.add_block('foo')
+    @bc.replace_chain(@bc2.chain)
+    expect(@bc.chain).not_to eq(@bc2.chain)
+  end
 
 end
